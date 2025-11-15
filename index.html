@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RockMarket - Global Marketplace for Rocks</title>
+    <title>Marble Dealer - Global Marketplace for Marble</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,13 +11,22 @@
         <nav class="navbar">
             <div class="container">
                 <div class="logo">
-                    <span class="rock-icon">🪨</span>
-                    <h1>RockMarket</h1>
+                    <span class="rock-icon">🏛️</span>
+                    <h1>Marble Dealer</h1>
                 </div>
                 <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#products">Products</a></li>
-                    <li><a href="#about">About</a></li>
+                    <li><a href="#home" data-i18n="nav.home">Home</a></li>
+                    <li><a href="#products" data-i18n="nav.products">Products</a></li>
+                    <li><a href="#about" data-i18n="nav.about">About</a></li>
+                    <li>
+                        <select id="languageSelect" class="language-select" onchange="changeLanguage(this.value)">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="zh">中文</option>
+                        </select>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -26,23 +35,26 @@
     <main>
         <section id="home" class="hero">
             <div class="container">
-                <h2>Global Marketplace for Rocks</h2>
-                <p>Discover unique rocks from sellers worldwide. Compare prices and find the perfect piece.</p>
-                <a href="#products" class="btn-primary">Browse Rocks</a>
+                <h2 data-i18n="hero.title">Global Marketplace for Rocks</h2>
+                <p data-i18n="hero.description">Discover unique rocks from sellers worldwide. Compare prices and find the perfect piece.</p>
+                <a href="#products" class="btn-primary" data-i18n="hero.button">Browse Rocks</a>
             </div>
         </section>
 
         <section id="products" class="products-section">
             <div class="container">
-                <h2>Available Rocks</h2>
+                <h2 data-i18n="products.title">Available Rocks</h2>
                 <div class="filters">
-                    <input type="text" id="searchInput" placeholder="Search rocks..." class="search-input">
+                    <input type="text" id="searchInput" data-i18n-placeholder="products.search" placeholder="Search rocks..." class="search-input">
                     <select id="categoryFilter" class="category-filter">
-                        <option value="">All Categories</option>
+                        <option value="" data-i18n="products.allCategories">All Categories</option>
                     </select>
-                    <input type="number" id="minPrice" placeholder="Min Price" class="price-input">
-                    <input type="number" id="maxPrice" placeholder="Max Price" class="price-input">
-                    <button onclick="filterProducts()" class="btn-filter">Filter</button>
+                    <select id="locationFilter" class="location-filter">
+                        <option value="" data-i18n="products.allLocations">All Locations</option>
+                    </select>
+                    <input type="number" id="minPrice" data-i18n-placeholder="products.minPrice" placeholder="Min Price" class="price-input">
+                    <input type="number" id="maxPrice" data-i18n-placeholder="products.maxPrice" placeholder="Max Price" class="price-input">
+                    <button onclick="filterProducts()" class="btn-filter" data-i18n="products.filter">Filter</button>
                 </div>
                 <div id="productsGrid" class="products-grid">
                     <!-- Products will be loaded here -->
@@ -52,23 +64,23 @@
 
         <section id="about" class="about-section">
             <div class="container">
-                <h2>About RockMarket</h2>
-                <p>RockMarket is a global marketplace connecting rock sellers and buyers worldwide. Sellers can list their products, and customers can browse and compare prices from different sellers.</p>
+                <h2 data-i18n="about.title">About RockMarket</h2>
+                <p data-i18n="about.description">RockMarket is a global marketplace connecting rock sellers and buyers worldwide. Sellers can list their products, and customers can browse and compare prices from different sellers.</p>
                 <div class="features">
                     <div class="feature">
                         <span class="feature-icon">🌍</span>
-                        <h3>Global Reach</h3>
-                        <p>Connect with sellers and buyers from around the world</p>
+                        <h3 data-i18n="about.feature1.title">Global Reach</h3>
+                        <p data-i18n="about.feature1.description">Connect with sellers and buyers from around the world</p>
                     </div>
                     <div class="feature">
                         <span class="feature-icon">💰</span>
-                        <h3>Compare Prices</h3>
-                        <p>Find the best deals by comparing prices from multiple sellers</p>
+                        <h3 data-i18n="about.feature2.title">Compare Prices</h3>
+                        <p data-i18n="about.feature2.description">Find the best deals by comparing prices from multiple sellers</p>
                     </div>
                     <div class="feature">
                         <span class="feature-icon">🛡️</span>
-                        <h3>Secure Platform</h3>
-                        <p>Safe and secure transactions for all users</p>
+                        <h3 data-i18n="about.feature3.title">Secure Platform</h3>
+                        <p data-i18n="about.feature3.description">Safe and secure transactions for all users</p>
                     </div>
                 </div>
             </div>
@@ -77,11 +89,315 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 RockMarket. All rights reserved.</p>
+            <p>&copy; 2024 <span data-i18n="footer.company">Marble Dealer</span>. <span data-i18n="footer.rights">All rights reserved.</span></p>
         </div>
     </footer>
 
     <script>
+        // Translation object
+        const translations = {
+            en: {
+                nav: {
+                    home: "Home",
+                    products: "Products",
+                    about: "About"
+                },
+                hero: {
+                    title: "Global Marketplace for Rocks",
+                    description: "Discover unique rocks from sellers worldwide. Compare prices and find the perfect piece.",
+                    button: "Browse Rocks"
+                },
+                products: {
+                    title: "Available Rocks",
+                    search: "Search rocks...",
+                    allCategories: "All Categories",
+                    allLocations: "All Locations",
+                    minPrice: "Min Price",
+                    maxPrice: "Max Price",
+                    filter: "Filter",
+                    noProducts: "No rocks found matching your criteria.",
+                    origin: "Origin",
+                    weight: "Weight",
+                    inStock: "In Stock",
+                    outOfStock: "Out of Stock"
+                },
+                about: {
+                    title: "About Marble Dealer",
+                    description: "Marble Dealer is a global marketplace connecting marble sellers and buyers worldwide. Sellers can list their products, and customers can browse and compare prices from different sellers.",
+                    feature1: {
+                        title: "Global Reach",
+                        description: "Connect with sellers and buyers from around the world"
+                    },
+                    feature2: {
+                        title: "Compare Prices",
+                        description: "Find the best deals by comparing prices from multiple sellers"
+                    },
+                    feature3: {
+                        title: "Secure Platform",
+                        description: "Safe and secure transactions for all users"
+                    }
+                },
+                footer: {
+                    company: "Marble Dealer",
+                    rights: "All rights reserved."
+                }
+            },
+            es: {
+                nav: {
+                    home: "Inicio",
+                    products: "Productos",
+                    about: "Acerca de"
+                },
+                hero: {
+                    title: "Mercado Global de Rocas",
+                    description: "Descubre rocas únicas de vendedores de todo el mundo. Compara precios y encuentra la pieza perfecta.",
+                    button: "Explorar Rocas"
+                },
+                products: {
+                    title: "Rocas Disponibles",
+                    search: "Buscar rocas...",
+                    allCategories: "Todas las Categorías",
+                    allLocations: "Todas las Ubicaciones",
+                    minPrice: "Precio Mín",
+                    maxPrice: "Precio Máx",
+                    filter: "Filtrar",
+                    noProducts: "No se encontraron rocas que coincidan con tus criterios.",
+                    origin: "Origen",
+                    weight: "Peso",
+                    inStock: "En Stock",
+                    outOfStock: "Sin Stock"
+                },
+                about: {
+                    title: "Acerca de Marble Dealer",
+                    description: "Marble Dealer es un mercado global que conecta vendedores y compradores de mármol en todo el mundo. Los vendedores pueden listar sus productos y los clientes pueden explorar y comparar precios de diferentes vendedores.",
+                    feature1: {
+                        title: "Alcance Global",
+                        description: "Conéctate con vendedores y compradores de todo el mundo"
+                    },
+                    feature2: {
+                        title: "Comparar Precios",
+                        description: "Encuentra las mejores ofertas comparando precios de múltiples vendedores"
+                    },
+                    feature3: {
+                        title: "Plataforma Segura",
+                        description: "Transacciones seguras para todos los usuarios"
+                    }
+                },
+                footer: {
+                    company: "Marble Dealer",
+                    rights: "Todos los derechos reservados."
+                }
+            },
+            fr: {
+                nav: {
+                    home: "Accueil",
+                    products: "Produits",
+                    about: "À propos"
+                },
+                hero: {
+                    title: "Marché Mondial des Roches",
+                    description: "Découvrez des roches uniques de vendeurs du monde entier. Comparez les prix et trouvez la pièce parfaite.",
+                    button: "Parcourir les Roches"
+                },
+                products: {
+                    title: "Roches Disponibles",
+                    search: "Rechercher des roches...",
+                    allCategories: "Toutes les Catégories",
+                    allLocations: "Tous les Lieux",
+                    minPrice: "Prix Min",
+                    maxPrice: "Prix Max",
+                    filter: "Filtrer",
+                    noProducts: "Aucune roche trouvée correspondant à vos critères.",
+                    origin: "Origine",
+                    weight: "Poids",
+                    inStock: "En Stock",
+                    outOfStock: "Rupture de Stock"
+                },
+                about: {
+                    title: "À propos de Marble Dealer",
+                    description: "Marble Dealer est un marché mondial reliant les vendeurs et acheteurs de marbre dans le monde entier. Les vendeurs peuvent lister leurs produits et les clients peuvent parcourir et comparer les prix de différents vendeurs.",
+                    feature1: {
+                        title: "Portée Mondiale",
+                        description: "Connectez-vous avec des vendeurs et acheteurs du monde entier"
+                    },
+                    feature2: {
+                        title: "Comparer les Prix",
+                        description: "Trouvez les meilleures offres en comparant les prix de plusieurs vendeurs"
+                    },
+                    feature3: {
+                        title: "Plateforme Sécurisée",
+                        description: "Transactions sûres et sécurisées pour tous les utilisateurs"
+                    }
+                },
+                footer: {
+                    company: "Marble Dealer",
+                    rights: "Tous droits réservés."
+                }
+            },
+            de: {
+                nav: {
+                    home: "Startseite",
+                    products: "Produkte",
+                    about: "Über uns"
+                },
+                hero: {
+                    title: "Globaler Marktplatz für Steine",
+                    description: "Entdecken Sie einzigartige Steine von Verkäufern weltweit. Vergleichen Sie Preise und finden Sie das perfekte Stück.",
+                    button: "Steine Durchsuchen"
+                },
+                products: {
+                    title: "Verfügbare Steine",
+                    search: "Steine suchen...",
+                    allCategories: "Alle Kategorien",
+                    allLocations: "Alle Standorte",
+                    minPrice: "Mindestpreis",
+                    maxPrice: "Höchstpreis",
+                    filter: "Filtern",
+                    noProducts: "Keine Steine gefunden, die Ihren Kriterien entsprechen.",
+                    origin: "Herkunft",
+                    weight: "Gewicht",
+                    inStock: "Auf Lager",
+                    outOfStock: "Nicht Vorrätig"
+                },
+                about: {
+                    title: "Über Marble Dealer",
+                    description: "Marble Dealer ist ein globaler Marktplatz, der Marmorhändler und -käufer weltweit verbindet. Verkäufer können ihre Produkte auflisten und Kunden können Preise verschiedener Verkäufer durchsuchen und vergleichen.",
+                    feature1: {
+                        title: "Globale Reichweite",
+                        description: "Verbinden Sie sich mit Verkäufern und Käufern aus aller Welt"
+                    },
+                    feature2: {
+                        title: "Preise Vergleichen",
+                        description: "Finden Sie die besten Angebote durch Preisvergleich mehrerer Verkäufer"
+                    },
+                    feature3: {
+                        title: "Sichere Plattform",
+                        description: "Sichere Transaktionen für alle Benutzer"
+                    }
+                },
+                footer: {
+                    company: "Marble Dealer",
+                    rights: "Alle Rechte vorbehalten."
+                }
+            },
+            zh: {
+                nav: {
+                    home: "首页",
+                    products: "产品",
+                    about: "关于"
+                },
+                hero: {
+                    title: "全球岩石市场",
+                    description: "发现来自世界各地卖家的独特岩石。比较价格，找到完美的作品。",
+                    button: "浏览岩石"
+                },
+                products: {
+                    title: "可用岩石",
+                    search: "搜索岩石...",
+                    allCategories: "所有类别",
+                    allLocations: "所有地点",
+                    minPrice: "最低价格",
+                    maxPrice: "最高价格",
+                    filter: "筛选",
+                    noProducts: "未找到符合您条件的岩石。",
+                    origin: "产地",
+                    weight: "重量",
+                    inStock: "有库存",
+                    outOfStock: "缺货"
+                },
+                about: {
+                    title: "关于Marble Dealer",
+                    description: "Marble Dealer是一个连接全球大理石买卖双方的全球市场。卖家可以列出他们的产品，客户可以浏览和比较不同卖家的价格。",
+                    feature1: {
+                        title: "全球覆盖",
+                        description: "与世界各地的卖家和买家联系"
+                    },
+                    feature2: {
+                        title: "比较价格",
+                        description: "通过比较多个卖家的价格找到最优惠的交易"
+                    },
+                    feature3: {
+                        title: "安全平台",
+                        description: "为所有用户提供安全可靠的交易"
+                    }
+                },
+                footer: {
+                    company: "Marble Dealer",
+                    rights: "保留所有权利。"
+                }
+            }
+        };
+
+        // Get current language from localStorage or default to English
+        let currentLanguage = localStorage.getItem('language') || 'en';
+
+        // Function to get translation by key path (e.g., "nav.home")
+        function getTranslation(key, lang = currentLanguage) {
+            const keys = key.split('.');
+            let value = translations[lang];
+            
+            for (const k of keys) {
+                if (value && typeof value === 'object' && k in value) {
+                    value = value[k];
+                } else {
+                    // Fallback to English if translation not found
+                    value = translations.en;
+                    for (const k2 of keys) {
+                        value = value[k2];
+                    }
+                    break;
+                }
+            }
+            
+            return typeof value === 'string' ? value : key;
+        }
+
+        // Function to translate all elements with data-i18n attribute
+        function translatePage(lang = currentLanguage) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            
+            // Update language selector
+            document.getElementById('languageSelect').value = lang;
+            
+            // Update HTML lang attribute
+            document.documentElement.lang = lang;
+            
+            // Translate all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                element.textContent = getTranslation(key, lang);
+            });
+            
+            // Translate all elements with data-i18n-placeholder
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                element.placeholder = getTranslation(key, lang);
+            });
+            
+            // Update "All Categories" option in category filter
+            const categoryFilter = document.getElementById('categoryFilter');
+            if (categoryFilter && categoryFilter.options[0]) {
+                categoryFilter.options[0].textContent = getTranslation('products.allCategories', lang);
+            }
+            
+            // Update "All Locations" option in location filter
+            const locationFilter = document.getElementById('locationFilter');
+            if (locationFilter && locationFilter.options[0]) {
+                locationFilter.options[0].textContent = getTranslation('products.allLocations', lang);
+            }
+            
+            // Re-render products to update translations
+            if (typeof displayProducts === 'function') {
+                displayProducts(allProducts);
+            }
+        }
+
+        // Function to change language
+        function changeLanguage(lang) {
+            translatePage(lang);
+        }
+
         // Products data from products.json
         const productsData = {
             "products": [
@@ -258,27 +574,51 @@
 
         let allProducts = productsData.products;
         let categories = [...new Set(allProducts.map(p => p.category))];
+        let locations = [...new Set(allProducts.map(p => p.origin_country).filter(Boolean))].sort();
 
-        // Populate category filter
-        const categoryFilter = document.getElementById('categoryFilter');
-        categories.forEach(category => {
-            const option = document.createElement('option');
-            option.value = category;
-            option.textContent = category;
-            categoryFilter.appendChild(option);
-        });
+        // Populate category filter (will be called on DOMContentLoaded)
+        function populateCategoryFilter() {
+            const categoryFilter = document.getElementById('categoryFilter');
+            // Clear existing options except "All Categories"
+            while (categoryFilter.options.length > 1) {
+                categoryFilter.remove(1);
+            }
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryFilter.appendChild(option);
+            });
+        }
 
-        // Load products on page load
-        displayProducts(allProducts);
+        // Populate location filter (will be called on DOMContentLoaded)
+        function populateLocationFilter() {
+            const locationFilter = document.getElementById('locationFilter');
+            // Clear existing options except "All Locations"
+            while (locationFilter.options.length > 1) {
+                locationFilter.remove(1);
+            }
+            locations.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location;
+                option.textContent = location;
+                locationFilter.appendChild(option);
+            });
+        }
 
         // Display products
         function displayProducts(products) {
             const grid = document.getElementById('productsGrid');
             
             if (products.length === 0) {
-                grid.innerHTML = '<p class="no-products">No rocks found matching your criteria.</p>';
+                grid.innerHTML = `<p class="no-products">${getTranslation('products.noProducts')}</p>`;
                 return;
             }
+            
+            const originLabel = getTranslation('products.origin');
+            const weightLabel = getTranslation('products.weight');
+            const inStockLabel = getTranslation('products.inStock');
+            const outOfStockLabel = getTranslation('products.outOfStock');
             
             grid.innerHTML = products.map(product => `
                 <div class="product-card">
@@ -294,13 +634,13 @@
                         <p class="product-seller">${product.company_name || 'Seller'}</p>
                         <p class="product-category">${product.category}</p>
                         ${product.description ? `<p class="product-description">${product.description}</p>` : ''}
-                        ${product.origin_country ? `<p class="product-origin">Origin: ${product.origin_country}</p>` : ''}
-                        ${product.weight_kg ? `<p class="product-weight">Weight: ${product.weight_kg} kg</p>` : ''}
+                        ${product.origin_country ? `<p class="product-origin">${originLabel}: ${product.origin_country}</p>` : ''}
+                        ${product.weight_kg ? `<p class="product-weight">${weightLabel}: ${product.weight_kg} kg</p>` : ''}
                         <div class="product-footer">
                             <span class="product-price">$${parseFloat(product.price).toFixed(2)} ${product.currency || 'USD'}</span>
                             ${product.stock_quantity > 0 ? 
-                                `<span class="stock-badge in-stock">In Stock (${product.stock_quantity})</span>` :
-                                `<span class="stock-badge out-of-stock">Out of Stock</span>`
+                                `<span class="stock-badge in-stock">${inStockLabel} (${product.stock_quantity})</span>` :
+                                `<span class="stock-badge out-of-stock">${outOfStockLabel}</span>`
                             }
                         </div>
                     </div>
@@ -312,6 +652,7 @@
         function filterProducts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const category = document.getElementById('categoryFilter').value;
+            const location = document.getElementById('locationFilter').value;
             const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
             const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
             
@@ -320,17 +661,28 @@
                     product.name.toLowerCase().includes(searchTerm) ||
                     (product.description && product.description.toLowerCase().includes(searchTerm));
                 const matchesCategory = !category || product.category === category;
+                const matchesLocation = !location || (product.origin_country && product.origin_country === location);
                 const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
                 
-                return matchesSearch && matchesCategory && matchesPrice;
+                return matchesSearch && matchesCategory && matchesLocation && matchesPrice;
             });
             
             displayProducts(filtered);
         }
 
-        // Search on input
-        document.getElementById('searchInput').addEventListener('keyup', filterProducts);
-        document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+        // Initialize translations and load products on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            populateCategoryFilter();
+            populateLocationFilter();
+            translatePage(currentLanguage);
+            // Load products after translations are applied
+            displayProducts(allProducts);
+            
+            // Set up event listeners
+            document.getElementById('searchInput').addEventListener('keyup', filterProducts);
+            document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+            document.getElementById('locationFilter').addEventListener('change', filterProducts);
+        });
     </script>
 </body>
 </html>
