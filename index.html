@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marble Dealer - Global Marketplace for Marble</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,6 +20,7 @@
                 <ul class="nav-links">
                     <li><a href="#home" data-i18n="nav.home">Home</a></li>
                     <li><a href="#products" data-i18n="nav.products">Products</a></li>
+                    <li><a href="#upload">Upload Images</a></li>
                     <li><a href="#about" data-i18n="nav.about">About</a></li>
                     <li>
                         <select id="languageSelect" class="language-select" onchange="changeLanguage(this.value)">
@@ -56,8 +60,56 @@
                     <input type="number" id="maxPrice" data-i18n-placeholder="products.maxPrice" placeholder="Max Price" class="price-input">
                     <button onclick="filterProducts()" class="btn-filter" data-i18n="products.filter">Filter</button>
                 </div>
+                <div class="location-tracking">
+                    <button id="trackLocationBtn" onclick="requestLocation()" class="btn-location">
+                        <span class="location-icon">📍</span>
+                        <span class="location-text" data-i18n="products.trackLocation">Track My Location</span>
+                    </button>
+                    <div id="locationStatus" class="location-status" style="display: none;">
+                        <span id="locationStatusText"></span>
+                        <button onclick="clearLocation()" class="btn-clear-location" data-i18n="products.clearLocation">Clear</button>
+                    </div>
+                </div>
                 <div id="productsGrid" class="products-grid">
                     <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <section id="upload" class="upload-section">
+            <div class="container">
+                <h2>Upload Images for Marbles & Tiles</h2>
+                <div class="upload-container">
+                    <div class="upload-tabs">
+                        <button class="upload-tab active" onclick="switchUploadTab('marbles')">Marbles</button>
+                        <button class="upload-tab" onclick="switchUploadTab('tiles')">Tiles</button>
+                    </div>
+                    <div id="marblesUpload" class="upload-content active">
+                        <div class="upload-form">
+                            <label for="marbleProductSelect" class="upload-label">Select Marble Product:</label>
+                            <select id="marbleProductSelect" class="upload-select">
+                                <option value="">-- Select Product --</option>
+                            </select>
+                            <label for="marbleImageInput" class="upload-label">Choose Image:</label>
+                            <input type="file" id="marbleImageInput" accept="image/*" class="upload-input">
+                            <div id="marblePreview" class="image-preview"></div>
+                            <button onclick="uploadMarbleImage()" class="btn-upload">Upload Image</button>
+                            <div id="marbleUploadStatus" class="upload-status"></div>
+                        </div>
+                    </div>
+                    <div id="tilesUpload" class="upload-content">
+                        <div class="upload-form">
+                            <label for="tileProductSelect" class="upload-label">Select Tile Product:</label>
+                            <select id="tileProductSelect" class="upload-select">
+                                <option value="">-- Select Product --</option>
+                            </select>
+                            <label for="tileImageInput" class="upload-label">Choose Image:</label>
+                            <input type="file" id="tileImageInput" accept="image/*" class="upload-input">
+                            <div id="tilePreview" class="image-preview"></div>
+                            <button onclick="uploadTileImage()" class="btn-upload">Upload Image</button>
+                            <div id="tileUploadStatus" class="upload-status"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -119,7 +171,12 @@
                     origin: "Origin",
                     weight: "Weight",
                     inStock: "In Stock",
-                    outOfStock: "Out of Stock"
+                    outOfStock: "Out of Stock",
+                    trackLocation: "Track My Location",
+                    locationTracked: "Location tracked",
+                    clearLocation: "Clear",
+                    enableLocation: "Enable location to find nearby products",
+                    locationError: "Unable to get location. Please check permissions."
                 },
                 about: {
                     title: "About Marble Dealer",
@@ -165,7 +222,12 @@
                     origin: "Origen",
                     weight: "Peso",
                     inStock: "En Stock",
-                    outOfStock: "Sin Stock"
+                    outOfStock: "Sin Stock",
+                    trackLocation: "Rastrear Mi Ubicación",
+                    locationTracked: "Ubicación rastreada",
+                    clearLocation: "Limpiar",
+                    enableLocation: "Habilita la ubicación para encontrar productos cercanos",
+                    locationError: "No se pudo obtener la ubicación. Por favor verifica los permisos."
                 },
                 about: {
                     title: "Acerca de Marble Dealer",
@@ -211,7 +273,12 @@
                     origin: "Origine",
                     weight: "Poids",
                     inStock: "En Stock",
-                    outOfStock: "Rupture de Stock"
+                    outOfStock: "Rupture de Stock",
+                    trackLocation: "Suivre Ma Position",
+                    locationTracked: "Position suivie",
+                    clearLocation: "Effacer",
+                    enableLocation: "Activez la position pour trouver des produits à proximité",
+                    locationError: "Impossible d'obtenir la position. Veuillez vérifier les permissions."
                 },
                 about: {
                     title: "À propos de Marble Dealer",
@@ -257,7 +324,12 @@
                     origin: "Herkunft",
                     weight: "Gewicht",
                     inStock: "Auf Lager",
-                    outOfStock: "Nicht Vorrätig"
+                    outOfStock: "Nicht Vorrätig",
+                    trackLocation: "Meinen Standort Verfolgen",
+                    locationTracked: "Standort verfolgt",
+                    clearLocation: "Löschen",
+                    enableLocation: "Aktivieren Sie den Standort, um nahegelegene Produkte zu finden",
+                    locationError: "Standort konnte nicht abgerufen werden. Bitte überprüfen Sie die Berechtigungen."
                 },
                 about: {
                     title: "Über Marble Dealer",
@@ -303,7 +375,12 @@
                     origin: "产地",
                     weight: "重量",
                     inStock: "有库存",
-                    outOfStock: "缺货"
+                    outOfStock: "缺货",
+                    trackLocation: "跟踪我的位置",
+                    locationTracked: "位置已跟踪",
+                    clearLocation: "清除",
+                    enableLocation: "启用位置以查找附近的产品",
+                    locationError: "无法获取位置。请检查权限。"
                 },
                 about: {
                     title: "关于Marble Dealer",
@@ -330,6 +407,9 @@
 
         // Get current language from localStorage or default to English
         let currentLanguage = localStorage.getItem('language') || 'en';
+        
+        // Location tracking variables
+        let userLocation = null;
 
         // Function to get translation by key path (e.g., "nav.home")
         function getTranslation(key, lang = currentLanguage) {
@@ -387,6 +467,11 @@
                 locationFilter.options[0].textContent = getTranslation('products.allLocations', lang);
             }
             
+            // Update location status text
+            if (userLocation) {
+                updateLocationStatus();
+            }
+            
             // Re-render products to update translations
             if (typeof displayProducts === 'function') {
                 displayProducts(allProducts);
@@ -408,7 +493,7 @@
                     "category": "Crystals",
                     "price": 45.99,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 15,
                     "weight_kg": 0.5,
                     "dimensions": "10cm x 8cm x 6cm",
@@ -422,7 +507,7 @@
                     "category": "Geodes",
                     "price": 125.00,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 8,
                     "weight_kg": 2.5,
                     "dimensions": "20cm x 18cm x 15cm",
@@ -436,26 +521,12 @@
                     "category": "Polished Stones",
                     "price": 18.50,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1611522319259-1e8c0b6c8b1a?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 25,
                     "weight_kg": 0.2,
                     "dimensions": "8cm x 7cm x 3cm",
                     "origin_country": "Madagascar",
                     "company_name": "Love Stones Co"
-                },
-                {
-                    "id": 4,
-                    "name": "Obsidian Arrowhead",
-                    "description": "Authentic handcrafted obsidian arrowhead. Sharp and beautifully crafted from volcanic glass.",
-                    "category": "Volcanic Rocks",
-                    "price": 32.00,
-                    "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
-                    "stock_quantity": 12,
-                    "weight_kg": 0.1,
-                    "dimensions": "5cm x 3cm x 1cm",
-                    "origin_country": "Mexico",
-                    "company_name": "Ancient Stones"
                 },
                 {
                     "id": 5,
@@ -464,7 +535,7 @@
                     "category": "Polished Stones",
                     "price": 55.75,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 10,
                     "weight_kg": 0.8,
                     "dimensions": "8cm diameter",
@@ -478,26 +549,12 @@
                     "category": "Volcanic Rocks",
                     "price": 28.99,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1602751613963-ec134e00a149?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 20,
                     "weight_kg": 1.2,
                     "dimensions": "15cm x 12cm x 3cm",
                     "origin_country": "Iceland",
                     "company_name": "Volcanic Wonders"
-                },
-                {
-                    "id": 7,
-                    "name": "Fluorite Octahedron",
-                    "description": "Perfectly formed fluorite octahedron crystal with vibrant purple and green colors.",
-                    "category": "Crystals",
-                    "price": 75.00,
-                    "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
-                    "stock_quantity": 6,
-                    "weight_kg": 0.3,
-                    "dimensions": "6cm x 6cm x 6cm",
-                    "origin_country": "China",
-                    "company_name": "Crystal World"
                 },
                 {
                     "id": 8,
@@ -506,7 +563,7 @@
                     "category": "Polished Stones",
                     "price": 22.50,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 30,
                     "weight_kg": 0.4,
                     "dimensions": "Various sizes",
@@ -520,26 +577,12 @@
                     "category": "Polished Stones",
                     "price": 15.99,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1611522319259-1e8c0b6c8b1a?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 40,
                     "weight_kg": 0.15,
                     "dimensions": "7cm x 5cm x 0.5cm",
                     "origin_country": "Brazil",
                     "company_name": "Agate Specialists"
-                },
-                {
-                    "id": 10,
-                    "name": "Pyrite Cube Cluster",
-                    "description": "Natural pyrite cubes in matrix. Also known as fool's gold, these cubic crystals are fascinating.",
-                    "category": "Crystals",
-                    "price": 38.50,
-                    "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
-                    "stock_quantity": 18,
-                    "weight_kg": 0.6,
-                    "dimensions": "9cm x 8cm x 7cm",
-                    "origin_country": "Spain",
-                    "company_name": "Crystal World"
                 },
                 {
                     "id": 11,
@@ -548,7 +591,7 @@
                     "category": "Geodes",
                     "price": 42.00,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 14,
                     "weight_kg": 1.5,
                     "dimensions": "12cm x 10cm x 10cm",
@@ -562,12 +605,96 @@
                     "category": "Raw Stones",
                     "price": 95.00,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1602751613963-ec134e00a149?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 7,
                     "weight_kg": 0.4,
                     "dimensions": "8cm x 6cm x 4cm",
                     "origin_country": "Afghanistan",
                     "company_name": "Premium Minerals"
+                },
+                {
+                    "id": 13,
+                    "name": "Carrara White Marble",
+                    "description": "Premium Italian Carrara white marble with elegant veining. Perfect for countertops and flooring.",
+                    "category": "Marbles",
+                    "price": 150.00,
+                    "currency": "USD",
+                    "image_url": "images/marbles/carrara-white.jpg",
+                    "stock_quantity": 25,
+                    "weight_kg": 50.0,
+                    "dimensions": "60cm x 30cm x 2cm",
+                    "origin_country": "Italy",
+                    "company_name": "Marble Masters"
+                },
+                {
+                    "id": 14,
+                    "name": "Calacatta Gold Marble",
+                    "description": "Luxurious Calacatta gold marble with dramatic gold veining. Premium quality for high-end projects.",
+                    "category": "Marbles",
+                    "price": 280.00,
+                    "currency": "USD",
+                    "image_url": "images/marbles/calacatta-gold.jpg",
+                    "stock_quantity": 12,
+                    "weight_kg": 50.0,
+                    "dimensions": "60cm x 30cm x 2cm",
+                    "origin_country": "Italy",
+                    "company_name": "Marble Masters"
+                },
+                {
+                    "id": 15,
+                    "name": "Emperador Dark Marble",
+                    "description": "Rich dark brown Emperador marble with beautiful natural patterns. Ideal for elegant interiors.",
+                    "category": "Marbles",
+                    "price": 120.00,
+                    "currency": "USD",
+                    "image_url": "images/marbles/emperador-dark.jpg",
+                    "stock_quantity": 18,
+                    "weight_kg": 50.0,
+                    "dimensions": "60cm x 30cm x 2cm",
+                    "origin_country": "Spain",
+                    "company_name": "Marble Masters"
+                },
+                {
+                    "id": 16,
+                    "name": "Porcelain Floor Tile",
+                    "description": "Durable porcelain floor tile in elegant gray finish. Waterproof and scratch-resistant.",
+                    "category": "Tiles",
+                    "price": 35.00,
+                    "currency": "USD",
+                    "image_url": "images/tiles/porcelain-gray.jpg",
+                    "stock_quantity": 100,
+                    "weight_kg": 15.0,
+                    "dimensions": "60cm x 60cm x 1cm",
+                    "origin_country": "China",
+                    "company_name": "Tile World"
+                },
+                {
+                    "id": 17,
+                    "name": "Ceramic Wall Tile",
+                    "description": "Beautiful ceramic wall tile in white subway style. Perfect for kitchens and bathrooms.",
+                    "category": "Tiles",
+                    "price": 18.00,
+                    "currency": "USD",
+                    "image_url": "images/tiles/ceramic-white.jpg",
+                    "stock_quantity": 150,
+                    "weight_kg": 8.0,
+                    "dimensions": "30cm x 10cm x 0.8cm",
+                    "origin_country": "USA",
+                    "company_name": "Tile World"
+                },
+                {
+                    "id": 18,
+                    "name": "Mosaic Glass Tile",
+                    "description": "Stunning mosaic glass tile in blue gradient. Adds elegance to any space.",
+                    "category": "Tiles",
+                    "price": 45.00,
+                    "currency": "USD",
+                    "image_url": "images/tiles/mosaic-blue.jpg",
+                    "stock_quantity": 80,
+                    "weight_kg": 5.0,
+                    "dimensions": "30cm x 30cm sheet",
+                    "origin_country": "Italy",
+                    "company_name": "Tile World"
                 }
             ]
         };
@@ -670,10 +797,285 @@
             displayProducts(filtered);
         }
 
+        // Location tracking functions
+        function requestLocation() {
+            if (!navigator.geolocation) {
+                alert(getTranslation('products.locationError'));
+                return;
+            }
+            
+            const btn = document.getElementById('trackLocationBtn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="location-icon">⏳</span><span class="location-text">Getting location...</span>';
+            
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    userLocation = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        accuracy: position.coords.accuracy,
+                        timestamp: Date.now()
+                    };
+                    
+                    // Save to localStorage
+                    localStorage.setItem('userLocation', JSON.stringify(userLocation));
+                    
+                    // Update UI
+                    updateLocationStatus();
+                    btn.disabled = false;
+                    translatePage(currentLanguage);
+                },
+                function(error) {
+                    console.error('Location error:', error);
+                    alert(getTranslation('products.locationError'));
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                }
+            );
+        }
+        
+        function clearLocation() {
+            userLocation = null;
+            localStorage.removeItem('userLocation');
+            updateLocationStatus();
+            translatePage(currentLanguage);
+        }
+        
+        function updateLocationStatus() {
+            const statusDiv = document.getElementById('locationStatus');
+            const statusText = document.getElementById('locationStatusText');
+            const btn = document.getElementById('trackLocationBtn');
+            
+            if (userLocation) {
+                statusDiv.style.display = 'flex';
+                btn.style.display = 'none';
+                // Format location coordinates nicely
+                const lat = userLocation.latitude.toFixed(4);
+                const lng = userLocation.longitude.toFixed(4);
+                statusText.textContent = `${getTranslation('products.locationTracked')} (${lat}, ${lng})`;
+            } else {
+                statusDiv.style.display = 'none';
+                btn.style.display = 'flex';
+            }
+        }
+        
+        function loadStoredLocation() {
+            const stored = localStorage.getItem('userLocation');
+            if (stored) {
+                try {
+                    userLocation = JSON.parse(stored);
+                    // Check if location is still valid (less than 24 hours old)
+                    if (Date.now() - userLocation.timestamp < 24 * 60 * 60 * 1000) {
+                        updateLocationStatus();
+                    } else {
+                        // Location is too old, clear it
+                        clearLocation();
+                    }
+                } catch (e) {
+                    console.error('Error loading stored location:', e);
+                    clearLocation();
+                }
+            }
+        }
+
+        // Image upload functionality
+        function switchUploadTab(tab) {
+            // Hide all upload contents
+            document.querySelectorAll('.upload-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            // Remove active class from all tabs
+            document.querySelectorAll('.upload-tab').forEach(tabBtn => {
+                tabBtn.classList.remove('active');
+            });
+            // Show selected tab content
+            if (tab === 'marbles') {
+                document.getElementById('marblesUpload').classList.add('active');
+                document.querySelectorAll('.upload-tab')[0].classList.add('active');
+            } else {
+                document.getElementById('tilesUpload').classList.add('active');
+                document.querySelectorAll('.upload-tab')[1].classList.add('active');
+            }
+        }
+
+        function populateUploadSelects() {
+            const marbleSelect = document.getElementById('marbleProductSelect');
+            const tileSelect = document.getElementById('tileProductSelect');
+            
+            // Clear existing options except first
+            while (marbleSelect.options.length > 1) {
+                marbleSelect.remove(1);
+            }
+            while (tileSelect.options.length > 1) {
+                tileSelect.remove(1);
+            }
+            
+            // Populate marble products
+            allProducts.filter(p => p.category === 'Marbles').forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = product.name;
+                marbleSelect.appendChild(option);
+            });
+            
+            // Populate tile products
+            allProducts.filter(p => p.category === 'Tiles').forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = product.name;
+                tileSelect.appendChild(option);
+            });
+        }
+
+        function previewImage(inputId, previewId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 10px; margin-top: 15px;">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function uploadMarbleImage() {
+            const productId = document.getElementById('marbleProductSelect').value;
+            const imageInput = document.getElementById('marbleImageInput');
+            const statusDiv = document.getElementById('marbleUploadStatus');
+            
+            if (!productId) {
+                statusDiv.innerHTML = '<span style="color: #ff6b6b;">Please select a product first.</span>';
+                return;
+            }
+            
+            if (!imageInput.files || !imageInput.files[0]) {
+                statusDiv.innerHTML = '<span style="color: #ff6b6b;">Please select an image file.</span>';
+                return;
+            }
+            
+            const file = imageInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const imageDataUrl = e.target.result;
+                const product = allProducts.find(p => p.id == productId);
+                
+                if (product) {
+                    // Store image in localStorage with product ID
+                    const imageKey = `marble_image_${productId}`;
+                    localStorage.setItem(imageKey, imageDataUrl);
+                    
+                    // Update product image_url to use localStorage reference
+                    product.image_url = imageDataUrl;
+                    
+                    // Update productsData
+                    const productIndex = productsData.products.findIndex(p => p.id == productId);
+                    if (productIndex !== -1) {
+                        productsData.products[productIndex].image_url = imageDataUrl;
+                    }
+                    
+                    // Save to localStorage for persistence
+                    localStorage.setItem('productsData', JSON.stringify(productsData));
+                    
+                    statusDiv.innerHTML = '<span style="color: #28a745;">✓ Image uploaded successfully! The product will now display your uploaded image.</span>';
+                    
+                    // Refresh product display
+                    displayProducts(allProducts);
+                    
+                    // Clear preview and input
+                    document.getElementById('marblePreview').innerHTML = '';
+                    imageInput.value = '';
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function uploadTileImage() {
+            const productId = document.getElementById('tileProductSelect').value;
+            const imageInput = document.getElementById('tileImageInput');
+            const statusDiv = document.getElementById('tileUploadStatus');
+            
+            if (!productId) {
+                statusDiv.innerHTML = '<span style="color: #ff6b6b;">Please select a product first.</span>';
+                return;
+            }
+            
+            if (!imageInput.files || !imageInput.files[0]) {
+                statusDiv.innerHTML = '<span style="color: #ff6b6b;">Please select an image file.</span>';
+                return;
+            }
+            
+            const file = imageInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const imageDataUrl = e.target.result;
+                const product = allProducts.find(p => p.id == productId);
+                
+                if (product) {
+                    // Store image in localStorage with product ID
+                    const imageKey = `tile_image_${productId}`;
+                    localStorage.setItem(imageKey, imageDataUrl);
+                    
+                    // Update product image_url to use localStorage reference
+                    product.image_url = imageDataUrl;
+                    
+                    // Update productsData
+                    const productIndex = productsData.products.findIndex(p => p.id == productId);
+                    if (productIndex !== -1) {
+                        productsData.products[productIndex].image_url = imageDataUrl;
+                    }
+                    
+                    // Save to localStorage for persistence
+                    localStorage.setItem('productsData', JSON.stringify(productsData));
+                    
+                    statusDiv.innerHTML = '<span style="color: #28a745;">✓ Image uploaded successfully! The product will now display your uploaded image.</span>';
+                    
+                    // Refresh product display
+                    displayProducts(allProducts);
+                    
+                    // Clear preview and input
+                    document.getElementById('tilePreview').innerHTML = '';
+                    imageInput.value = '';
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function loadStoredImages() {
+            // Load images from localStorage and update products
+            allProducts.forEach(product => {
+                if (product.category === 'Marbles' || product.category === 'Tiles') {
+                    const imageKey = `${product.category.toLowerCase().slice(0, -1)}_image_${product.id}`;
+                    const storedImage = localStorage.getItem(imageKey);
+                    if (storedImage) {
+                        product.image_url = storedImage;
+                        const productIndex = productsData.products.findIndex(p => p.id === product.id);
+                        if (productIndex !== -1) {
+                            productsData.products[productIndex].image_url = storedImage;
+                        }
+                    }
+                }
+            });
+        }
+
         // Initialize translations and load products on page load
         document.addEventListener('DOMContentLoaded', function() {
             populateCategoryFilter();
             populateLocationFilter();
+            populateUploadSelects();
+            loadStoredLocation();
+            loadStoredImages();
             translatePage(currentLanguage);
             // Load products after translations are applied
             displayProducts(allProducts);
@@ -682,6 +1084,14 @@
             document.getElementById('searchInput').addEventListener('keyup', filterProducts);
             document.getElementById('categoryFilter').addEventListener('change', filterProducts);
             document.getElementById('locationFilter').addEventListener('change', filterProducts);
+            
+            // Image preview listeners
+            document.getElementById('marbleImageInput').addEventListener('change', function() {
+                previewImage('marbleImageInput', 'marblePreview');
+            });
+            document.getElementById('tileImageInput').addEventListener('change', function() {
+                previewImage('tileImageInput', 'tilePreview');
+            });
         });
     </script>
 </body>
