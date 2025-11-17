@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RockMarket - Global Marketplace for Rocks</title>
+    <title>Marble Connect - Global Marketplace for Marble</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,13 +14,41 @@
         <nav class="navbar">
             <div class="container">
                 <div class="logo">
-                    <span class="rock-icon">🪨</span>
-                    <h1>RockMarket</h1>
+                    <svg class="logo-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="marbleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#3282b8;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#64b5f6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#90caf9;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="40" height="40" rx="8" fill="url(#marbleGradient)"/>
+                        <path d="M20 8 L26 14 M20 8 L14 14" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+                        <path d="M8 20 L14 26 M8 20 L14 14" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+                        <path d="M32 20 L26 26 M32 20 L26 14" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+                        <path d="M20 32 L14 26 M20 32 L26 26" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+                        <circle cx="20" cy="20" r="4" fill="#ffffff" opacity="0.8"/>
+                        <circle cx="14" cy="14" r="2" fill="#ffffff"/>
+                        <circle cx="26" cy="14" r="2" fill="#ffffff"/>
+                        <circle cx="14" cy="26" r="2" fill="#ffffff"/>
+                        <circle cx="26" cy="26" r="2" fill="#ffffff"/>
+                    </svg>
+                    <h1>Marble Connect</h1>
                 </div>
                 <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#products">Products</a></li>
-                    <li><a href="#about">About</a></li>
+                    <li><a href="#home" data-i18n="nav.home">Home</a></li>
+                    <li><a href="#products" data-i18n="nav.products">Products</a></li>
+                    <li><a href="#upload">Upload Images</a></li>
+                    <li><a href="#about" data-i18n="nav.about">About</a></li>
+                    <li>
+                        <select id="languageSelect" class="language-select" onchange="changeLanguage(this.value)">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="zh">中文</option>
+                        </select>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -26,23 +57,36 @@
     <main>
         <section id="home" class="hero">
             <div class="container">
-                <h2>Global Marketplace for Rocks</h2>
-                <p>Discover unique rocks from sellers worldwide. Compare prices and find the perfect piece.</p>
-                <a href="#products" class="btn-primary">Browse Rocks</a>
+                <h2 data-i18n="hero.title">Global Marketplace for Rocks</h2>
+                <p data-i18n="hero.description">Discover unique rocks from sellers worldwide. Compare prices and find the perfect piece.</p>
+                <a href="#products" class="btn-primary" data-i18n="hero.button">Browse Rocks</a>
             </div>
         </section>
 
         <section id="products" class="products-section">
             <div class="container">
-                <h2>Available Rocks</h2>
+                <h2 data-i18n="products.title">Available Rocks</h2>
                 <div class="filters">
-                    <input type="text" id="searchInput" placeholder="Search rocks..." class="search-input">
+                    <input type="text" id="searchInput" data-i18n-placeholder="products.search" placeholder="Search rocks..." class="search-input">
                     <select id="categoryFilter" class="category-filter">
-                        <option value="">All Categories</option>
+                        <option value="" data-i18n="products.allCategories">All Categories</option>
                     </select>
-                    <input type="number" id="minPrice" placeholder="Min Price" class="price-input">
-                    <input type="number" id="maxPrice" placeholder="Max Price" class="price-input">
-                    <button onclick="filterProducts()" class="btn-filter">Filter</button>
+                    <select id="locationFilter" class="location-filter">
+                        <option value="" data-i18n="products.allLocations">All Locations</option>
+                    </select>
+                    <input type="number" id="minPrice" data-i18n-placeholder="products.minPrice" placeholder="Min Price" class="price-input">
+                    <input type="number" id="maxPrice" data-i18n-placeholder="products.maxPrice" placeholder="Max Price" class="price-input">
+                    <button onclick="filterProducts()" class="btn-filter" data-i18n="products.filter">Filter</button>
+                </div>
+                <div class="location-tracking">
+                    <button id="trackLocationBtn" onclick="requestLocation()" class="btn-location">
+                        <span class="location-icon">📍</span>
+                        <span class="location-text" data-i18n="products.trackLocation">Track My Location</span>
+                    </button>
+                    <div id="locationStatus" class="location-status" style="display: none;">
+                        <span id="locationStatusText"></span>
+                        <button onclick="clearLocation()" class="btn-clear-location" data-i18n="products.clearLocation">Clear</button>
+                    </div>
                 </div>
                 <div id="productsGrid" class="products-grid">
                     <!-- Products will be loaded here -->
@@ -50,25 +94,63 @@
             </div>
         </section>
 
+        <section id="upload" class="upload-section">
+            <div class="container">
+                <h2>Upload Images for Marbles & Tiles</h2>
+                <div class="upload-container">
+                    <div class="upload-tabs">
+                        <button class="upload-tab active" onclick="switchUploadTab('marbles')">Marbles</button>
+                        <button class="upload-tab" onclick="switchUploadTab('tiles')">Tiles</button>
+                    </div>
+                    <div id="marblesUpload" class="upload-content active">
+                        <div class="upload-form">
+                            <label for="marbleProductSelect" class="upload-label">Select Marble Product:</label>
+                            <select id="marbleProductSelect" class="upload-select">
+                                <option value="">-- Select Product --</option>
+                            </select>
+                            <label for="marbleImageInput" class="upload-label">Choose Image:</label>
+                            <input type="file" id="marbleImageInput" accept="image/*" class="upload-input">
+                            <div id="marblePreview" class="image-preview"></div>
+                            <button onclick="uploadMarbleImage()" class="btn-upload">Upload Image</button>
+                            <div id="marbleUploadStatus" class="upload-status"></div>
+                        </div>
+                    </div>
+                    <div id="tilesUpload" class="upload-content">
+                        <div class="upload-form">
+                            <label for="tileProductSelect" class="upload-label">Select Tile Product:</label>
+                            <select id="tileProductSelect" class="upload-select">
+                                <option value="">-- Select Product --</option>
+                            </select>
+                            <label for="tileImageInput" class="upload-label">Choose Image:</label>
+                            <input type="file" id="tileImageInput" accept="image/*" class="upload-input">
+                            <div id="tilePreview" class="image-preview"></div>
+                            <button onclick="uploadTileImage()" class="btn-upload">Upload Image</button>
+                            <div id="tileUploadStatus" class="upload-status"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="about" class="about-section">
             <div class="container">
-                <h2>About RockMarket</h2>
-                <p>RockMarket is a global marketplace connecting rock sellers and buyers worldwide. Sellers can list their products, and customers can browse and compare prices from different sellers.</p>
+                <h2 data-i18n="about.title">About RockMarket</h2>
+                <p data-i18n="about.description">RockMarket is a global marketplace connecting rock sellers and buyers worldwide. Sellers can list their products, and customers can browse and compare prices from different sellers.</p>
                 <div class="features">
                     <div class="feature">
                         <span class="feature-icon">🌍</span>
-                        <h3>Global Reach</h3>
-                        <p>Connect with sellers and buyers from around the world</p>
+                        <h3 data-i18n="about.feature1.title">Global Reach</h3>
+                        <p data-i18n="about.feature1.description">Connect with sellers and buyers from around the world</p>
                     </div>
                     <div class="feature">
                         <span class="feature-icon">💰</span>
-                        <h3>Compare Prices</h3>
-                        <p>Find the best deals by comparing prices from multiple sellers</p>
+                        <h3 data-i18n="about.feature2.title">Compare Prices</h3>
+                        <p data-i18n="about.feature2.description">Find the best deals by comparing prices from multiple sellers</p>
                     </div>
                     <div class="feature">
                         <span class="feature-icon">🛡️</span>
-                        <h3>Secure Platform</h3>
-                        <p>Safe and secure transactions for all users</p>
+                        <h3 data-i18n="about.feature3.title">Secure Platform</h3>
+                        <p data-i18n="about.feature3.description">Safe and secure transactions for all users</p>
                     </div>
                 </div>
             </div>
@@ -77,11 +159,348 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 RockMarket. All rights reserved.</p>
+            <p>&copy; 2024 <span data-i18n="footer.company">Marble Connect</span>. <span data-i18n="footer.rights">All rights reserved.</span></p>
         </div>
     </footer>
 
     <script>
+        // Translation object
+        const translations = {
+            en: {
+                nav: {
+                    home: "Home",
+                    products: "Products",
+                    about: "About"
+                },
+                hero: {
+                    title: "Global Marketplace for Rocks",
+                    description: "Discover unique rocks from sellers worldwide. Compare prices and find the perfect piece.",
+                    button: "Browse Rocks"
+                },
+                products: {
+                    title: "Available Rocks",
+                    search: "Search rocks...",
+                    allCategories: "All Categories",
+                    allLocations: "All Locations",
+                    minPrice: "Min Price",
+                    maxPrice: "Max Price",
+                    filter: "Filter",
+                    noProducts: "No rocks found matching your criteria.",
+                    origin: "Origin",
+                    weight: "Weight",
+                    inStock: "In Stock",
+                    outOfStock: "Out of Stock",
+                    trackLocation: "Track My Location",
+                    locationTracked: "Location tracked",
+                    clearLocation: "Clear",
+                    enableLocation: "Enable location to find nearby products",
+                    locationError: "Unable to get location. Please check permissions."
+                },
+                about: {
+                    title: "About Marble Connect",
+                    description: "Marble Connect is a global marketplace connecting marble sellers and buyers worldwide. Sellers can list their products, and customers can browse and compare prices from different sellers.",
+                    feature1: {
+                        title: "Global Reach",
+                        description: "Connect with sellers and buyers from around the world"
+                    },
+                    feature2: {
+                        title: "Compare Prices",
+                        description: "Find the best deals by comparing prices from multiple sellers"
+                    },
+                    feature3: {
+                        title: "Secure Platform",
+                        description: "Safe and secure transactions for all users"
+                    }
+                },
+                footer: {
+                    company: "Marble Connect",
+                    rights: "All rights reserved."
+                }
+            },
+            es: {
+                nav: {
+                    home: "Inicio",
+                    products: "Productos",
+                    about: "Acerca de"
+                },
+                hero: {
+                    title: "Mercado Global de Rocas",
+                    description: "Descubre rocas únicas de vendedores de todo el mundo. Compara precios y encuentra la pieza perfecta.",
+                    button: "Explorar Rocas"
+                },
+                products: {
+                    title: "Rocas Disponibles",
+                    search: "Buscar rocas...",
+                    allCategories: "Todas las Categorías",
+                    allLocations: "Todas las Ubicaciones",
+                    minPrice: "Precio Mín",
+                    maxPrice: "Precio Máx",
+                    filter: "Filtrar",
+                    noProducts: "No se encontraron rocas que coincidan con tus criterios.",
+                    origin: "Origen",
+                    weight: "Peso",
+                    inStock: "En Stock",
+                    outOfStock: "Sin Stock",
+                    trackLocation: "Rastrear Mi Ubicación",
+                    locationTracked: "Ubicación rastreada",
+                    clearLocation: "Limpiar",
+                    enableLocation: "Habilita la ubicación para encontrar productos cercanos",
+                    locationError: "No se pudo obtener la ubicación. Por favor verifica los permisos."
+                },
+                about: {
+                    title: "Acerca de Marble Connect",
+                    description: "Marble Connect es un mercado global que conecta vendedores y compradores de mármol en todo el mundo. Los vendedores pueden listar sus productos y los clientes pueden explorar y comparar precios de diferentes vendedores.",
+                    feature1: {
+                        title: "Alcance Global",
+                        description: "Conéctate con vendedores y compradores de todo el mundo"
+                    },
+                    feature2: {
+                        title: "Comparar Precios",
+                        description: "Encuentra las mejores ofertas comparando precios de múltiples vendedores"
+                    },
+                    feature3: {
+                        title: "Plataforma Segura",
+                        description: "Transacciones seguras para todos los usuarios"
+                    }
+                },
+                footer: {
+                    company: "Marble Connect",
+                    rights: "Todos los derechos reservados."
+                }
+            },
+            fr: {
+                nav: {
+                    home: "Accueil",
+                    products: "Produits",
+                    about: "À propos"
+                },
+                hero: {
+                    title: "Marché Mondial des Roches",
+                    description: "Découvrez des roches uniques de vendeurs du monde entier. Comparez les prix et trouvez la pièce parfaite.",
+                    button: "Parcourir les Roches"
+                },
+                products: {
+                    title: "Roches Disponibles",
+                    search: "Rechercher des roches...",
+                    allCategories: "Toutes les Catégories",
+                    allLocations: "Tous les Lieux",
+                    minPrice: "Prix Min",
+                    maxPrice: "Prix Max",
+                    filter: "Filtrer",
+                    noProducts: "Aucune roche trouvée correspondant à vos critères.",
+                    origin: "Origine",
+                    weight: "Poids",
+                    inStock: "En Stock",
+                    outOfStock: "Rupture de Stock",
+                    trackLocation: "Suivre Ma Position",
+                    locationTracked: "Position suivie",
+                    clearLocation: "Effacer",
+                    enableLocation: "Activez la position pour trouver des produits à proximité",
+                    locationError: "Impossible d'obtenir la position. Veuillez vérifier les permissions."
+                },
+                about: {
+                    title: "À propos de Marble Connect",
+                    description: "Marble Connect est un marché mondial reliant les vendeurs et acheteurs de marbre dans le monde entier. Les vendeurs peuvent lister leurs produits et les clients peuvent parcourir et comparer les prix de différents vendeurs.",
+                    feature1: {
+                        title: "Portée Mondiale",
+                        description: "Connectez-vous avec des vendeurs et acheteurs du monde entier"
+                    },
+                    feature2: {
+                        title: "Comparer les Prix",
+                        description: "Trouvez les meilleures offres en comparant les prix de plusieurs vendeurs"
+                    },
+                    feature3: {
+                        title: "Plateforme Sécurisée",
+                        description: "Transactions sûres et sécurisées pour tous les utilisateurs"
+                    }
+                },
+                footer: {
+                    company: "Marble Connect",
+                    rights: "Tous droits réservés."
+                }
+            },
+            de: {
+                nav: {
+                    home: "Startseite",
+                    products: "Produkte",
+                    about: "Über uns"
+                },
+                hero: {
+                    title: "Globaler Marktplatz für Steine",
+                    description: "Entdecken Sie einzigartige Steine von Verkäufern weltweit. Vergleichen Sie Preise und finden Sie das perfekte Stück.",
+                    button: "Steine Durchsuchen"
+                },
+                products: {
+                    title: "Verfügbare Steine",
+                    search: "Steine suchen...",
+                    allCategories: "Alle Kategorien",
+                    allLocations: "Alle Standorte",
+                    minPrice: "Mindestpreis",
+                    maxPrice: "Höchstpreis",
+                    filter: "Filtern",
+                    noProducts: "Keine Steine gefunden, die Ihren Kriterien entsprechen.",
+                    origin: "Herkunft",
+                    weight: "Gewicht",
+                    inStock: "Auf Lager",
+                    outOfStock: "Nicht Vorrätig",
+                    trackLocation: "Meinen Standort Verfolgen",
+                    locationTracked: "Standort verfolgt",
+                    clearLocation: "Löschen",
+                    enableLocation: "Aktivieren Sie den Standort, um nahegelegene Produkte zu finden",
+                    locationError: "Standort konnte nicht abgerufen werden. Bitte überprüfen Sie die Berechtigungen."
+                },
+                about: {
+                    title: "Über Marble Connect",
+                    description: "Marble Connect ist ein globaler Marktplatz, der Marmorhändler und -käufer weltweit verbindet. Verkäufer können ihre Produkte auflisten und Kunden können Preise verschiedener Verkäufer durchsuchen und vergleichen.",
+                    feature1: {
+                        title: "Globale Reichweite",
+                        description: "Verbinden Sie sich mit Verkäufern und Käufern aus aller Welt"
+                    },
+                    feature2: {
+                        title: "Preise Vergleichen",
+                        description: "Finden Sie die besten Angebote durch Preisvergleich mehrerer Verkäufer"
+                    },
+                    feature3: {
+                        title: "Sichere Plattform",
+                        description: "Sichere Transaktionen für alle Benutzer"
+                    }
+                },
+                footer: {
+                    company: "Marble Connect",
+                    rights: "Alle Rechte vorbehalten."
+                }
+            },
+            zh: {
+                nav: {
+                    home: "首页",
+                    products: "产品",
+                    about: "关于"
+                },
+                hero: {
+                    title: "全球岩石市场",
+                    description: "发现来自世界各地卖家的独特岩石。比较价格，找到完美的作品。",
+                    button: "浏览岩石"
+                },
+                products: {
+                    title: "可用岩石",
+                    search: "搜索岩石...",
+                    allCategories: "所有类别",
+                    allLocations: "所有地点",
+                    minPrice: "最低价格",
+                    maxPrice: "最高价格",
+                    filter: "筛选",
+                    noProducts: "未找到符合您条件的岩石。",
+                    origin: "产地",
+                    weight: "重量",
+                    inStock: "有库存",
+                    outOfStock: "缺货",
+                    trackLocation: "跟踪我的位置",
+                    locationTracked: "位置已跟踪",
+                    clearLocation: "清除",
+                    enableLocation: "启用位置以查找附近的产品",
+                    locationError: "无法获取位置。请检查权限。"
+                },
+                about: {
+                    title: "关于Marble Connect",
+                    description: "Marble Connect是一个连接全球大理石买卖双方的全球市场。卖家可以列出他们的产品，客户可以浏览和比较不同卖家的价格。",
+                    feature1: {
+                        title: "全球覆盖",
+                        description: "与世界各地的卖家和买家联系"
+                    },
+                    feature2: {
+                        title: "比较价格",
+                        description: "通过比较多个卖家的价格找到最优惠的交易"
+                    },
+                    feature3: {
+                        title: "安全平台",
+                        description: "为所有用户提供安全可靠的交易"
+                    }
+                },
+                footer: {
+                    company: "Marble Connect",
+                    rights: "保留所有权利。"
+                }
+            }
+        };
+
+        // Get current language from localStorage or default to English
+        let currentLanguage = localStorage.getItem('language') || 'en';
+        
+        // Location tracking variables
+        let userLocation = null;
+
+        // Function to get translation by key path (e.g., "nav.home")
+        function getTranslation(key, lang = currentLanguage) {
+            const keys = key.split('.');
+            let value = translations[lang];
+            
+            for (const k of keys) {
+                if (value && typeof value === 'object' && k in value) {
+                    value = value[k];
+                } else {
+                    // Fallback to English if translation not found
+                    value = translations.en;
+                    for (const k2 of keys) {
+                        value = value[k2];
+                    }
+                    break;
+                }
+            }
+            
+            return typeof value === 'string' ? value : key;
+        }
+
+        // Function to translate all elements with data-i18n attribute
+        function translatePage(lang = currentLanguage) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            
+            // Update language selector
+            document.getElementById('languageSelect').value = lang;
+            
+            // Update HTML lang attribute
+            document.documentElement.lang = lang;
+            
+            // Translate all elements with data-i18n
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                element.textContent = getTranslation(key, lang);
+            });
+            
+            // Translate all elements with data-i18n-placeholder
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                element.placeholder = getTranslation(key, lang);
+            });
+            
+            // Update "All Categories" option in category filter
+            const categoryFilter = document.getElementById('categoryFilter');
+            if (categoryFilter && categoryFilter.options[0]) {
+                categoryFilter.options[0].textContent = getTranslation('products.allCategories', lang);
+            }
+            
+            // Update "All Locations" option in location filter
+            const locationFilter = document.getElementById('locationFilter');
+            if (locationFilter && locationFilter.options[0]) {
+                locationFilter.options[0].textContent = getTranslation('products.allLocations', lang);
+            }
+            
+            // Update location status text
+            if (userLocation) {
+                updateLocationStatus();
+            }
+            
+            // Re-render products to update translations
+            if (typeof displayProducts === 'function') {
+                displayProducts(allProducts);
+            }
+        }
+
+        // Function to change language
+        function changeLanguage(lang) {
+            translatePage(lang);
+        }
+
         // Products data from products.json
         const productsData = {
             "products": [
@@ -92,7 +511,7 @@
                     "category": "Crystals",
                     "price": 45.99,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 15,
                     "weight_kg": 0.5,
                     "dimensions": "10cm x 8cm x 6cm",
@@ -106,7 +525,7 @@
                     "category": "Geodes",
                     "price": 125.00,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 8,
                     "weight_kg": 2.5,
                     "dimensions": "20cm x 18cm x 15cm",
@@ -120,26 +539,12 @@
                     "category": "Polished Stones",
                     "price": 18.50,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1611522319259-1e8c0b6c8b1a?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 25,
                     "weight_kg": 0.2,
                     "dimensions": "8cm x 7cm x 3cm",
                     "origin_country": "Madagascar",
                     "company_name": "Love Stones Co"
-                },
-                {
-                    "id": 4,
-                    "name": "Obsidian Arrowhead",
-                    "description": "Authentic handcrafted obsidian arrowhead. Sharp and beautifully crafted from volcanic glass.",
-                    "category": "Volcanic Rocks",
-                    "price": 32.00,
-                    "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
-                    "stock_quantity": 12,
-                    "weight_kg": 0.1,
-                    "dimensions": "5cm x 3cm x 1cm",
-                    "origin_country": "Mexico",
-                    "company_name": "Ancient Stones"
                 },
                 {
                     "id": 5,
@@ -148,7 +553,7 @@
                     "category": "Polished Stones",
                     "price": 55.75,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 10,
                     "weight_kg": 0.8,
                     "dimensions": "8cm diameter",
@@ -162,26 +567,12 @@
                     "category": "Volcanic Rocks",
                     "price": 28.99,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1602751613963-ec134e00a149?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 20,
                     "weight_kg": 1.2,
                     "dimensions": "15cm x 12cm x 3cm",
                     "origin_country": "Iceland",
                     "company_name": "Volcanic Wonders"
-                },
-                {
-                    "id": 7,
-                    "name": "Fluorite Octahedron",
-                    "description": "Perfectly formed fluorite octahedron crystal with vibrant purple and green colors.",
-                    "category": "Crystals",
-                    "price": 75.00,
-                    "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
-                    "stock_quantity": 6,
-                    "weight_kg": 0.3,
-                    "dimensions": "6cm x 6cm x 6cm",
-                    "origin_country": "China",
-                    "company_name": "Crystal World"
                 },
                 {
                     "id": 8,
@@ -190,7 +581,7 @@
                     "category": "Polished Stones",
                     "price": 22.50,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 30,
                     "weight_kg": 0.4,
                     "dimensions": "Various sizes",
@@ -204,26 +595,12 @@
                     "category": "Polished Stones",
                     "price": 15.99,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1611522319259-1e8c0b6c8b1a?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 40,
                     "weight_kg": 0.15,
                     "dimensions": "7cm x 5cm x 0.5cm",
                     "origin_country": "Brazil",
                     "company_name": "Agate Specialists"
-                },
-                {
-                    "id": 10,
-                    "name": "Pyrite Cube Cluster",
-                    "description": "Natural pyrite cubes in matrix. Also known as fool's gold, these cubic crystals are fascinating.",
-                    "category": "Crystals",
-                    "price": 38.50,
-                    "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
-                    "stock_quantity": 18,
-                    "weight_kg": 0.6,
-                    "dimensions": "9cm x 8cm x 7cm",
-                    "origin_country": "Spain",
-                    "company_name": "Crystal World"
                 },
                 {
                     "id": 11,
@@ -232,7 +609,7 @@
                     "category": "Geodes",
                     "price": 42.00,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 14,
                     "weight_kg": 1.5,
                     "dimensions": "12cm x 10cm x 10cm",
@@ -246,39 +623,147 @@
                     "category": "Raw Stones",
                     "price": 95.00,
                     "currency": "USD",
-                    "image_url": "https://images.unsplash.com/photo-1602751584552-8ba73ace91d5?w=600&h=600&fit=crop&q=80&auto=format",
+                    "image_url": "https://images.unsplash.com/photo-1602751613963-ec134e00a149?w=800&h=800&fit=crop&q=80&auto=format",
                     "stock_quantity": 7,
                     "weight_kg": 0.4,
                     "dimensions": "8cm x 6cm x 4cm",
                     "origin_country": "Afghanistan",
                     "company_name": "Premium Minerals"
+                },
+                {
+                    "id": 13,
+                    "name": "Carrara White Marble",
+                    "description": "Premium Italian Carrara white marble with elegant veining. Perfect for countertops and flooring.",
+                    "category": "Marbles",
+                    "price": 150.00,
+                    "currency": "USD",
+                    "image_url": "images/marbles/carrara-white.jpg",
+                    "stock_quantity": 25,
+                    "weight_kg": 50.0,
+                    "dimensions": "60cm x 30cm x 2cm",
+                    "origin_country": "Italy",
+                    "company_name": "Marble Masters"
+                },
+                {
+                    "id": 14,
+                    "name": "Calacatta Gold Marble",
+                    "description": "Luxurious Calacatta gold marble with dramatic gold veining. Premium quality for high-end projects.",
+                    "category": "Marbles",
+                    "price": 280.00,
+                    "currency": "USD",
+                    "image_url": "images/marbles/calacatta-gold.jpg",
+                    "stock_quantity": 12,
+                    "weight_kg": 50.0,
+                    "dimensions": "60cm x 30cm x 2cm",
+                    "origin_country": "Italy",
+                    "company_name": "Marble Masters"
+                },
+                {
+                    "id": 15,
+                    "name": "Emperador Dark Marble",
+                    "description": "Rich dark brown Emperador marble with beautiful natural patterns. Ideal for elegant interiors.",
+                    "category": "Marbles",
+                    "price": 120.00,
+                    "currency": "USD",
+                    "image_url": "images/marbles/emperador-dark.jpg",
+                    "stock_quantity": 18,
+                    "weight_kg": 50.0,
+                    "dimensions": "60cm x 30cm x 2cm",
+                    "origin_country": "Spain",
+                    "company_name": "Marble Masters"
+                },
+                {
+                    "id": 16,
+                    "name": "Porcelain Floor Tile",
+                    "description": "Durable porcelain floor tile in elegant gray finish. Waterproof and scratch-resistant.",
+                    "category": "Tiles",
+                    "price": 35.00,
+                    "currency": "USD",
+                    "image_url": "images/tiles/porcelain-gray.jpg",
+                    "stock_quantity": 100,
+                    "weight_kg": 15.0,
+                    "dimensions": "60cm x 60cm x 1cm",
+                    "origin_country": "China",
+                    "company_name": "Tile World"
+                },
+                {
+                    "id": 17,
+                    "name": "Ceramic Wall Tile",
+                    "description": "Beautiful ceramic wall tile in white subway style. Perfect for kitchens and bathrooms.",
+                    "category": "Tiles",
+                    "price": 18.00,
+                    "currency": "USD",
+                    "image_url": "images/tiles/ceramic-white.jpg",
+                    "stock_quantity": 150,
+                    "weight_kg": 8.0,
+                    "dimensions": "30cm x 10cm x 0.8cm",
+                    "origin_country": "USA",
+                    "company_name": "Tile World"
+                },
+                {
+                    "id": 18,
+                    "name": "Mosaic Glass Tile",
+                    "description": "Stunning mosaic glass tile in blue gradient. Adds elegance to any space.",
+                    "category": "Tiles",
+                    "price": 45.00,
+                    "currency": "USD",
+                    "image_url": "images/tiles/mosaic-blue.jpg",
+                    "stock_quantity": 80,
+                    "weight_kg": 5.0,
+                    "dimensions": "30cm x 30cm sheet",
+                    "origin_country": "Italy",
+                    "company_name": "Tile World"
                 }
             ]
         };
 
         let allProducts = productsData.products;
         let categories = [...new Set(allProducts.map(p => p.category))];
+        let locations = [...new Set(allProducts.map(p => p.origin_country).filter(Boolean))].sort();
 
-        // Populate category filter
-        const categoryFilter = document.getElementById('categoryFilter');
-        categories.forEach(category => {
-            const option = document.createElement('option');
-            option.value = category;
-            option.textContent = category;
-            categoryFilter.appendChild(option);
-        });
+        // Populate category filter (will be called on DOMContentLoaded)
+        function populateCategoryFilter() {
+            const categoryFilter = document.getElementById('categoryFilter');
+            // Clear existing options except "All Categories"
+            while (categoryFilter.options.length > 1) {
+                categoryFilter.remove(1);
+            }
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categoryFilter.appendChild(option);
+            });
+        }
 
-        // Load products on page load
-        displayProducts(allProducts);
+        // Populate location filter (will be called on DOMContentLoaded)
+        function populateLocationFilter() {
+            const locationFilter = document.getElementById('locationFilter');
+            // Clear existing options except "All Locations"
+            while (locationFilter.options.length > 1) {
+                locationFilter.remove(1);
+            }
+            locations.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location;
+                option.textContent = location;
+                locationFilter.appendChild(option);
+            });
+        }
 
         // Display products
         function displayProducts(products) {
             const grid = document.getElementById('productsGrid');
             
             if (products.length === 0) {
-                grid.innerHTML = '<p class="no-products">No rocks found matching your criteria.</p>';
+                grid.innerHTML = `<p class="no-products">${getTranslation('products.noProducts')}</p>`;
                 return;
             }
+            
+            const originLabel = getTranslation('products.origin');
+            const weightLabel = getTranslation('products.weight');
+            const inStockLabel = getTranslation('products.inStock');
+            const outOfStockLabel = getTranslation('products.outOfStock');
             
             grid.innerHTML = products.map(product => `
                 <div class="product-card">
@@ -294,13 +779,13 @@
                         <p class="product-seller">${product.company_name || 'Seller'}</p>
                         <p class="product-category">${product.category}</p>
                         ${product.description ? `<p class="product-description">${product.description}</p>` : ''}
-                        ${product.origin_country ? `<p class="product-origin">Origin: ${product.origin_country}</p>` : ''}
-                        ${product.weight_kg ? `<p class="product-weight">Weight: ${product.weight_kg} kg</p>` : ''}
+                        ${product.origin_country ? `<p class="product-origin">${originLabel}: ${product.origin_country}</p>` : ''}
+                        ${product.weight_kg ? `<p class="product-weight">${weightLabel}: ${product.weight_kg} kg</p>` : ''}
                         <div class="product-footer">
                             <span class="product-price">$${parseFloat(product.price).toFixed(2)} ${product.currency || 'USD'}</span>
                             ${product.stock_quantity > 0 ? 
-                                `<span class="stock-badge in-stock">In Stock (${product.stock_quantity})</span>` :
-                                `<span class="stock-badge out-of-stock">Out of Stock</span>`
+                                `<span class="stock-badge in-stock">${inStockLabel} (${product.stock_quantity})</span>` :
+                                `<span class="stock-badge out-of-stock">${outOfStockLabel}</span>`
                             }
                         </div>
                     </div>
@@ -312,6 +797,7 @@
         function filterProducts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const category = document.getElementById('categoryFilter').value;
+            const location = document.getElementById('locationFilter').value;
             const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
             const maxPrice = parseFloat(document.getElementById('maxPrice').value) || Infinity;
             
@@ -320,17 +806,311 @@
                     product.name.toLowerCase().includes(searchTerm) ||
                     (product.description && product.description.toLowerCase().includes(searchTerm));
                 const matchesCategory = !category || product.category === category;
+                const matchesLocation = !location || (product.origin_country && product.origin_country === location);
                 const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
                 
-                return matchesSearch && matchesCategory && matchesPrice;
+                return matchesSearch && matchesCategory && matchesLocation && matchesPrice;
             });
             
             displayProducts(filtered);
         }
 
-        // Search on input
-        document.getElementById('searchInput').addEventListener('keyup', filterProducts);
-        document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+        // Location tracking functions
+        function requestLocation() {
+            if (!navigator.geolocation) {
+                alert(getTranslation('products.locationError'));
+                return;
+            }
+            
+            const btn = document.getElementById('trackLocationBtn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="location-icon">⏳</span><span class="location-text">Getting location...</span>';
+            
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    userLocation = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        accuracy: position.coords.accuracy,
+                        timestamp: Date.now()
+                    };
+                    
+                    // Save to localStorage
+                    localStorage.setItem('userLocation', JSON.stringify(userLocation));
+                    
+                    // Update UI
+                    updateLocationStatus();
+                    btn.disabled = false;
+                    translatePage(currentLanguage);
+                },
+                function(error) {
+                    console.error('Location error:', error);
+                    alert(getTranslation('products.locationError'));
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 60000
+                }
+            );
+        }
+        
+        function clearLocation() {
+            userLocation = null;
+            localStorage.removeItem('userLocation');
+            updateLocationStatus();
+            translatePage(currentLanguage);
+        }
+        
+        function updateLocationStatus() {
+            const statusDiv = document.getElementById('locationStatus');
+            const statusText = document.getElementById('locationStatusText');
+            const btn = document.getElementById('trackLocationBtn');
+            
+            if (userLocation) {
+                statusDiv.style.display = 'flex';
+                btn.style.display = 'none';
+                // Format location coordinates nicely
+                const lat = userLocation.latitude.toFixed(4);
+                const lng = userLocation.longitude.toFixed(4);
+                statusText.textContent = `${getTranslation('products.locationTracked')} (${lat}, ${lng})`;
+            } else {
+                statusDiv.style.display = 'none';
+                btn.style.display = 'flex';
+            }
+        }
+        
+        function loadStoredLocation() {
+            const stored = localStorage.getItem('userLocation');
+            if (stored) {
+                try {
+                    userLocation = JSON.parse(stored);
+                    // Check if location is still valid (less than 24 hours old)
+                    if (Date.now() - userLocation.timestamp < 24 * 60 * 60 * 1000) {
+                        updateLocationStatus();
+                    } else {
+                        // Location is too old, clear it
+                        clearLocation();
+                    }
+                } catch (e) {
+                    console.error('Error loading stored location:', e);
+                    clearLocation();
+                }
+            }
+        }
+
+        // Image upload functionality
+        function switchUploadTab(tab) {
+            // Hide all upload contents
+            document.querySelectorAll('.upload-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            // Remove active class from all tabs
+            document.querySelectorAll('.upload-tab').forEach(tabBtn => {
+                tabBtn.classList.remove('active');
+            });
+            // Show selected tab content
+            if (tab === 'marbles') {
+                document.getElementById('marblesUpload').classList.add('active');
+                document.querySelectorAll('.upload-tab')[0].classList.add('active');
+            } else {
+                document.getElementById('tilesUpload').classList.add('active');
+                document.querySelectorAll('.upload-tab')[1].classList.add('active');
+            }
+        }
+
+        function populateUploadSelects() {
+            const marbleSelect = document.getElementById('marbleProductSelect');
+            const tileSelect = document.getElementById('tileProductSelect');
+            
+            // Clear existing options except first
+            while (marbleSelect.options.length > 1) {
+                marbleSelect.remove(1);
+            }
+            while (tileSelect.options.length > 1) {
+                tileSelect.remove(1);
+            }
+            
+            // Populate marble products
+            allProducts.filter(p => p.category === 'Marbles').forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = product.name;
+                marbleSelect.appendChild(option);
+            });
+            
+            // Populate tile products
+            allProducts.filter(p => p.category === 'Tiles').forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = product.name;
+                tileSelect.appendChild(option);
+            });
+        }
+
+        function previewImage(inputId, previewId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 10px; margin-top: 15px;">`;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function uploadMarbleImage() {
+            const productId = document.getElementById('marbleProductSelect').value;
+            const imageInput = document.getElementById('marbleImageInput');
+            const statusDiv = document.getElementById('marbleUploadStatus');
+            
+            if (!productId) {
+                statusDiv.innerHTML = '<span style="color: #ff6b6b;">Please select a product first.</span>';
+                return;
+            }
+            
+            if (!imageInput.files || !imageInput.files[0]) {
+                statusDiv.innerHTML = '<span style="color: #ff6b6b;">Please select an image file.</span>';
+                return;
+            }
+            
+            const file = imageInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const imageDataUrl = e.target.result;
+                const product = allProducts.find(p => p.id == productId);
+                
+                if (product) {
+                    // Store image in localStorage with product ID
+                    const imageKey = `marble_image_${productId}`;
+                    localStorage.setItem(imageKey, imageDataUrl);
+                    
+                    // Update product image_url to use localStorage reference
+                    product.image_url = imageDataUrl;
+                    
+                    // Update productsData
+                    const productIndex = productsData.products.findIndex(p => p.id == productId);
+                    if (productIndex !== -1) {
+                        productsData.products[productIndex].image_url = imageDataUrl;
+                    }
+                    
+                    // Save to localStorage for persistence
+                    localStorage.setItem('productsData', JSON.stringify(productsData));
+                    
+                    statusDiv.innerHTML = '<span style="color: #28a745;">✓ Image uploaded successfully! The product will now display your uploaded image.</span>';
+                    
+                    // Refresh product display
+                    displayProducts(allProducts);
+                    
+                    // Clear preview and input
+                    document.getElementById('marblePreview').innerHTML = '';
+                    imageInput.value = '';
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function uploadTileImage() {
+            const productId = document.getElementById('tileProductSelect').value;
+            const imageInput = document.getElementById('tileImageInput');
+            const statusDiv = document.getElementById('tileUploadStatus');
+            
+            if (!productId) {
+                statusDiv.innerHTML = '<span style="color: #ff6b6b;">Please select a product first.</span>';
+                return;
+            }
+            
+            if (!imageInput.files || !imageInput.files[0]) {
+                statusDiv.innerHTML = '<span style="color: #ff6b6b;">Please select an image file.</span>';
+                return;
+            }
+            
+            const file = imageInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const imageDataUrl = e.target.result;
+                const product = allProducts.find(p => p.id == productId);
+                
+                if (product) {
+                    // Store image in localStorage with product ID
+                    const imageKey = `tile_image_${productId}`;
+                    localStorage.setItem(imageKey, imageDataUrl);
+                    
+                    // Update product image_url to use localStorage reference
+                    product.image_url = imageDataUrl;
+                    
+                    // Update productsData
+                    const productIndex = productsData.products.findIndex(p => p.id == productId);
+                    if (productIndex !== -1) {
+                        productsData.products[productIndex].image_url = imageDataUrl;
+                    }
+                    
+                    // Save to localStorage for persistence
+                    localStorage.setItem('productsData', JSON.stringify(productsData));
+                    
+                    statusDiv.innerHTML = '<span style="color: #28a745;">✓ Image uploaded successfully! The product will now display your uploaded image.</span>';
+                    
+                    // Refresh product display
+                    displayProducts(allProducts);
+                    
+                    // Clear preview and input
+                    document.getElementById('tilePreview').innerHTML = '';
+                    imageInput.value = '';
+                }
+            };
+            
+            reader.readAsDataURL(file);
+        }
+
+        function loadStoredImages() {
+            // Load images from localStorage and update products
+            allProducts.forEach(product => {
+                if (product.category === 'Marbles' || product.category === 'Tiles') {
+                    const imageKey = `${product.category.toLowerCase().slice(0, -1)}_image_${product.id}`;
+                    const storedImage = localStorage.getItem(imageKey);
+                    if (storedImage) {
+                        product.image_url = storedImage;
+                        const productIndex = productsData.products.findIndex(p => p.id === product.id);
+                        if (productIndex !== -1) {
+                            productsData.products[productIndex].image_url = storedImage;
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize translations and load products on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            populateCategoryFilter();
+            populateLocationFilter();
+            populateUploadSelects();
+            loadStoredLocation();
+            loadStoredImages();
+            translatePage(currentLanguage);
+            // Load products after translations are applied
+            displayProducts(allProducts);
+            
+            // Set up event listeners
+            document.getElementById('searchInput').addEventListener('keyup', filterProducts);
+            document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+            document.getElementById('locationFilter').addEventListener('change', filterProducts);
+            
+            // Image preview listeners
+            document.getElementById('marbleImageInput').addEventListener('change', function() {
+                previewImage('marbleImageInput', 'marblePreview');
+            });
+            document.getElementById('tileImageInput').addEventListener('change', function() {
+                previewImage('tileImageInput', 'tilePreview');
+            });
+        });
     </script>
 </body>
 </html>
