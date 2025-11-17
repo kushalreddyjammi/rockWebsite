@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marble Dealer - Global Marketplace for Marble</title>
+    <title>Marble Connect - Global Marketplace for Marble</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -14,8 +14,26 @@
         <nav class="navbar">
             <div class="container">
                 <div class="logo">
-                    <span class="rock-icon">🏛️</span>
-                    <h1>Marble Dealer</h1>
+                    <svg class="logo-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="marbleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#3282b8;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#64b5f6;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#90caf9;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="40" height="40" rx="8" fill="url(#marbleGradient)"/>
+                        <path d="M20 8 L26 14 M20 8 L14 14" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+                        <path d="M8 20 L14 26 M8 20 L14 14" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+                        <path d="M32 20 L26 26 M32 20 L26 14" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+                        <path d="M20 32 L14 26 M20 32 L26 26" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.9"/>
+                        <circle cx="20" cy="20" r="4" fill="#ffffff" opacity="0.8"/>
+                        <circle cx="14" cy="14" r="2" fill="#ffffff"/>
+                        <circle cx="26" cy="14" r="2" fill="#ffffff"/>
+                        <circle cx="14" cy="26" r="2" fill="#ffffff"/>
+                        <circle cx="26" cy="26" r="2" fill="#ffffff"/>
+                    </svg>
+                    <h1>Marble Connect</h1>
                 </div>
                 <ul class="nav-links">
                     <li><a href="#home" data-i18n="nav.home">Home</a></li>
@@ -141,7 +159,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 <span data-i18n="footer.company">Marble Dealer</span>. <span data-i18n="footer.rights">All rights reserved.</span></p>
+            <p>&copy; 2024 <span data-i18n="footer.company">Marble Connect</span>. <span data-i18n="footer.rights">All rights reserved.</span></p>
         </div>
     </footer>
 
@@ -179,8 +197,8 @@
                     locationError: "Unable to get location. Please check permissions."
                 },
                 about: {
-                    title: "About Marble Dealer",
-                    description: "Marble Dealer is a global marketplace connecting marble sellers and buyers worldwide. Sellers can list their products, and customers can browse and compare prices from different sellers.",
+                    title: "About Marble Connect",
+                    description: "Marble Connect is a global marketplace connecting marble sellers and buyers worldwide. Sellers can list their products, and customers can browse and compare prices from different sellers.",
                     feature1: {
                         title: "Global Reach",
                         description: "Connect with sellers and buyers from around the world"
@@ -195,7 +213,7 @@
                     }
                 },
                 footer: {
-                    company: "Marble Dealer",
+                    company: "Marble Connect",
                     rights: "All rights reserved."
                 }
             },
@@ -230,8 +248,8 @@
                     locationError: "No se pudo obtener la ubicación. Por favor verifica los permisos."
                 },
                 about: {
-                    title: "Acerca de Marble Dealer",
-                    description: "Marble Dealer es un mercado global que conecta vendedores y compradores de mármol en todo el mundo. Los vendedores pueden listar sus productos y los clientes pueden explorar y comparar precios de diferentes vendedores.",
+                    title: "Acerca de Marble Connect",
+                    description: "Marble Connect es un mercado global que conecta vendedores y compradores de mármol en todo el mundo. Los vendedores pueden listar sus productos y los clientes pueden explorar y comparar precios de diferentes vendedores.",
                     feature1: {
                         title: "Alcance Global",
                         description: "Conéctate con vendedores y compradores de todo el mundo"
@@ -246,7 +264,7 @@
                     }
                 },
                 footer: {
-                    company: "Marble Dealer",
+                    company: "Marble Connect",
                     rights: "Todos los derechos reservados."
                 }
             },
@@ -281,8 +299,8 @@
                     locationError: "Impossible d'obtenir la position. Veuillez vérifier les permissions."
                 },
                 about: {
-                    title: "À propos de Marble Dealer",
-                    description: "Marble Dealer est un marché mondial reliant les vendeurs et acheteurs de marbre dans le monde entier. Les vendeurs peuvent lister leurs produits et les clients peuvent parcourir et comparer les prix de différents vendeurs.",
+                    title: "À propos de Marble Connect",
+                    description: "Marble Connect est un marché mondial reliant les vendeurs et acheteurs de marbre dans le monde entier. Les vendeurs peuvent lister leurs produits et les clients peuvent parcourir et comparer les prix de différents vendeurs.",
                     feature1: {
                         title: "Portée Mondiale",
                         description: "Connectez-vous avec des vendeurs et acheteurs du monde entier"
@@ -297,7 +315,7 @@
                     }
                 },
                 footer: {
-                    company: "Marble Dealer",
+                    company: "Marble Connect",
                     rights: "Tous droits réservés."
                 }
             },
@@ -332,8 +350,8 @@
                     locationError: "Standort konnte nicht abgerufen werden. Bitte überprüfen Sie die Berechtigungen."
                 },
                 about: {
-                    title: "Über Marble Dealer",
-                    description: "Marble Dealer ist ein globaler Marktplatz, der Marmorhändler und -käufer weltweit verbindet. Verkäufer können ihre Produkte auflisten und Kunden können Preise verschiedener Verkäufer durchsuchen und vergleichen.",
+                    title: "Über Marble Connect",
+                    description: "Marble Connect ist ein globaler Marktplatz, der Marmorhändler und -käufer weltweit verbindet. Verkäufer können ihre Produkte auflisten und Kunden können Preise verschiedener Verkäufer durchsuchen und vergleichen.",
                     feature1: {
                         title: "Globale Reichweite",
                         description: "Verbinden Sie sich mit Verkäufern und Käufern aus aller Welt"
@@ -348,7 +366,7 @@
                     }
                 },
                 footer: {
-                    company: "Marble Dealer",
+                    company: "Marble Connect",
                     rights: "Alle Rechte vorbehalten."
                 }
             },
@@ -383,8 +401,8 @@
                     locationError: "无法获取位置。请检查权限。"
                 },
                 about: {
-                    title: "关于Marble Dealer",
-                    description: "Marble Dealer是一个连接全球大理石买卖双方的全球市场。卖家可以列出他们的产品，客户可以浏览和比较不同卖家的价格。",
+                    title: "关于Marble Connect",
+                    description: "Marble Connect是一个连接全球大理石买卖双方的全球市场。卖家可以列出他们的产品，客户可以浏览和比较不同卖家的价格。",
                     feature1: {
                         title: "全球覆盖",
                         description: "与世界各地的卖家和买家联系"
@@ -399,7 +417,7 @@
                     }
                 },
                 footer: {
-                    company: "Marble Dealer",
+                    company: "Marble Connect",
                     rights: "保留所有权利。"
                 }
             }
